@@ -3,12 +3,14 @@
 pub use anchor_syn::idl::*;
 
 mod account;
+mod event;
 mod instruction;
 mod program;
 mod state;
 mod typedef;
 
 pub use account::*;
+pub use event::*;
 pub use instruction::*;
 pub use program::*;
 pub use state::*;
