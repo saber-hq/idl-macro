@@ -33,6 +33,8 @@ pub fn ty_to_rust_type(ty: &IdlType) -> String {
         IdlType::F64 => "f64".to_string(),
         IdlType::U128 => "u128".to_string(),
         IdlType::I128 => "i128".to_string(),
+        IdlType::U256 => "u256".to_string(),
+        IdlType::I256 => "i256".to_string(),
         IdlType::Bytes => "Vec<u8>".to_string(),
         IdlType::String => "String".to_string(),
         IdlType::PublicKey => "Pubkey".to_string(),

@@ -12,13 +12,14 @@ keywords = ["solana", "anchor"]
 compat-program-result = []
 
 [dependencies]
-anchor-syn = { version = "0.24.2", features = ["idl"] }
+anchor-syn = { version = "0.27.0", features = ["idl"] }
 darling = "0.14"
 heck = "0.4.0"
 proc-macro2 = "1"
 quote = "1"
 serde_json = "1.0.94"
 syn = { version = "1", features = ["full"] }
+bytemuck = { version = "1.4.0", features = ["derive", "min_const_generics"]}
 
 [dev-dependencies]
-anchor-lang = "0.24.2"
+anchor-lang = "0.27.0"
