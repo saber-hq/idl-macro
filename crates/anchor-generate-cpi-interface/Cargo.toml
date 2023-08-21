@@ -20,7 +20,7 @@ compat-program-result = ["anchor-idl/compat-program-result"]
 [dependencies]
 anchor-idl = { version = "0.3.0", path = "../anchor-idl" }
 darling = "0.14"
-syn = { version = "1", features = ["full"] }
+syn = { version = "2", features = ["full"] }
 
 [dev-dependencies]
 anchor-lang = "0.24.2"

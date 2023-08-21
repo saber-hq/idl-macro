@@ -18,7 +18,7 @@ heck = "0.4.1"
 proc-macro2 = "1"
 quote = "1"
 serde_json = "1.0.105"
-syn = { version = "1", features = ["full"] }
+syn = { version = "2", features = ["full"] }
 
 [dev-dependencies]
 anchor-lang = "0.24.2"
