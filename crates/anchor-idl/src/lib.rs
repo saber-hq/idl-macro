@@ -33,6 +33,8 @@ pub fn ty_to_rust_type(ty: &IdlType) -> String {
         IdlType::F64 => "f64".to_string(),
         IdlType::U128 => "u128".to_string(),
         IdlType::I128 => "i128".to_string(),
+        IdlType::U256 => "u256".to_string(),
+        IdlType::I256 => "i256".to_string(),
         IdlType::Bytes => "Vec<u8>".to_string(),
         IdlType::String => "String".to_string(),
         IdlType::PublicKey => "Pubkey".to_string(),
@@ -40,5 +42,15 @@ pub fn ty_to_rust_type(ty: &IdlType) -> String {
         IdlType::Vec(inner) => format!("Vec<{}>", ty_to_rust_type(inner)),
         IdlType::Array(ty, size) => format!("[{}; {}]", ty_to_rust_type(ty), size),
         IdlType::Defined(name) => name.to_string(),
+        IdlType::GenericLenArray(inner, _) => format!("Vec<{}>", ty_to_rust_type(inner)),
+        IdlType::Generic(generic) => generic.to_string(),
+        IdlType::DefinedWithTypeArgs { name, args } => {
+            let args_list = args.iter().map(|arg| match arg {
+                IdlDefinedTypeArg::Generic(generic) => generic.clone(),
+                IdlDefinedTypeArg::Value(value) => value.clone(),
+                IdlDefinedTypeArg::Type(idl_type) => ty_to_rust_type(idl_type),
+            }).collect::<Vec<_>>().join(", ");
+            format!("{}<{}>", name, args_list)
+        }
     }
 }

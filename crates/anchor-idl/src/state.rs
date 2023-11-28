@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use anchor_syn::idl::{IdlField, IdlTypeDefinition};
+use anchor_syn::idl::types::{IdlField, IdlTypeDefinition, IdlTypeDefinitionTy};
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 
@@ -15,7 +15,7 @@ pub fn generate_account(
 ) -> TokenStream {
     let props = get_field_list_properties(defs, fields);
 
-    let derive_copy = if props.can_copy && !opts.zero_copy {
+    let derive_copy = if props.can_copy && opts.zero_copy.is_none() {
         quote! {
             #[derive(Copy)]
         }
@@ -29,24 +29,36 @@ pub fn generate_account(
     } else {
         quote! {}
     };
-    let derive_account = if opts.zero_copy {
-        let repr = if opts.packed {
+    let derive_account = if let Some(zero_copy) = opts.zero_copy {
+        let zero_copy_quote = match zero_copy {
+            crate::ZeroCopy::Unsafe => quote! {
+                #[account(zero_copy(unsafe))]
+            },
+            crate::ZeroCopy::Safe => quote! {
+                #[account(zero_copy)]
+            },
+        };
+        if let Some(repr) = opts.representation {
+            let repr_quote = match repr {
+                crate::Representation::C => quote! {
+                    #[repr(C)]
+                },
+                crate::Representation::Transparent => quote! {
+                    #[repr(transparent)]
+                },
+                crate::Representation::Packed => quote! {
+                    #[repr(packed)]
+                },
+            };
             quote! {
-                #[repr(packed)]
+                #zero_copy_quote
+                #repr_quote
             }
         } else {
-            quote! {
-                #[repr(C)]
-            }
-        };
-        quote! {
-            #[account(zero_copy)]
-            #repr
+            zero_copy_quote
         }
     } else {
-        quote! {
-            #[account]
-        }
+        quote! {#[account]}
     };
 
     let doc = format!(" Account: {}", account_name);
@@ -70,12 +82,15 @@ pub fn generate_accounts(
     struct_opts: &BTreeMap<String, StructOpts>,
 ) -> TokenStream {
     let defined = account_defs.iter().map(|def| match &def.ty {
-        anchor_syn::idl::IdlTypeDefinitionTy::Struct { fields } => {
+        IdlTypeDefinitionTy::Struct { fields } => {
             let opts = struct_opts.get(&def.name).copied().unwrap_or_default();
             generate_account(typedefs, &def.name, fields, opts)
         }
-        anchor_syn::idl::IdlTypeDefinitionTy::Enum { .. } => {
+        IdlTypeDefinitionTy::Enum { .. } => {
             panic!("unexpected enum account");
+        }
+        IdlTypeDefinitionTy::Alias { .. } => {
+            panic!("unexpected alias account");
         }
     });
     quote! {

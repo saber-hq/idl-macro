@@ -9,8 +9,8 @@
 
 anchor_gen::generate_cpi_interface!(
     idl_path = "idl.json",
-    zero_copy(TickArray, Tick),
-    packed(TickArray, Tick)
+    zero_copy_unsafe(TickArray, Tick),
+    packed_representation(TickArray, Tick),
 );
 
 impl Default for state::TickArray {

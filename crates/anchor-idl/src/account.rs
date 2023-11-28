@@ -1,4 +1,4 @@
-pub use anchor_syn::idl::*;
+pub use anchor_syn::idl::types::*;
 use heck::{ToPascalCase, ToSnakeCase};
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
@@ -12,7 +12,7 @@ pub fn generate_account_fields(
     let all_fields = accounts
         .iter()
         .map(|account| match account {
-            anchor_syn::idl::IdlAccountItem::IdlAccount(info) => {
+            IdlAccountItem::IdlAccount(info) => {
                 let acc_name = format_ident!("{}", info.name.to_snake_case());
                 let annotation = if info.is_mut {
                     quote! { #[account(mut)] }
@@ -29,7 +29,7 @@ pub fn generate_account_fields(
                    pub #acc_name: #ty
                 }
             }
-            anchor_syn::idl::IdlAccountItem::IdlAccounts(inner) => {
+            IdlAccountItem::IdlAccounts(inner) => {
                 let field_name = format_ident!("{}{}", name, inner.name.to_snake_case());
                 let sub_name = format!("{}{}", name, inner.name.to_pascal_case());
                 let sub_ident = format_ident!("{}", &sub_name);

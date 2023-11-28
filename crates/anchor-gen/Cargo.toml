@@ -1,6 +1,6 @@
 [package]
 name = "anchor-gen"
-version = "0.3.1"
+version = "0.4.0"
 edition = "2021"
 description = "Generates an Anchor CPI crate from a JSON IDL."
 authors = ["Ian Macalinao <ian@saber.so>"]
@@ -20,5 +20,5 @@ compat-program-result = [
 ]
 
 [dependencies]
-anchor-generate-cpi-crate = { version = "0.3.0", path = "../anchor-generate-cpi-crate" }
-anchor-generate-cpi-interface = { version = "0.3.0", path = "../anchor-generate-cpi-interface" }
+anchor-generate-cpi-crate = { version = "0.4.0", path = "../anchor-generate-cpi-crate" }
+anchor-generate-cpi-interface = { version = "0.4.0", path = "../anchor-generate-cpi-interface" }

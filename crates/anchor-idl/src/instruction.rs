@@ -1,4 +1,4 @@
-use anchor_syn::idl::IdlInstruction;
+use anchor_syn::idl::types::IdlInstruction;
 use heck::{ToPascalCase, ToSnakeCase};
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
