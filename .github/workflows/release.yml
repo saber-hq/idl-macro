@@ -32,7 +32,7 @@ jobs:
 
       # Publish
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body: ${{steps.build-changelog.outputs.changelog}}
           generate_release_notes: true
