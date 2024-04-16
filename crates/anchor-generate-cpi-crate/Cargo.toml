@@ -22,4 +22,4 @@ anchor-idl = { version = "0.3.0", path = "../anchor-idl" }
 syn = { version = "1", features = ["full"] }
 
 [dev-dependencies]
-anchor-lang = "0.24.2"
+anchor-lang = "0.30.0"
